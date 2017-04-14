@@ -1,0 +1,54 @@
+So the feature is the what, the scenario is the how and the steps are what happens to make the how possible
+
+The actual feature is the main story, then each scenario is like a separate chapter. 
+
+We now need to write our tests, which are called steps, based on the scenarios.
+
+
+---------------------------------------------------------------------
+Features - describe in natural language what the feature does
+
+Features are described as:
+
+Scenario: Search for an account
+   Given I search for a valid account
+    Then I will see the account details
+
+---------------------------------------------------------------------
+Steps - implement the "given" and "then" parts
+
+@given('I search for a valid account')
+def step_impl(context):
+   context.browser.get('http://localhost:8000/index')
+   form = get_element(context.browser, tag='form')
+   get_element(form, name="msisdn").send_keys('61415551234')
+   form.submit()
+
+@then('I will see the account details')
+def step_impl(context):
+   elements = find_elements(context.browser, id='no-account')
+   eq_(elements, [], 'account not found')
+   h = get_element(context.browser, id='account-head')
+   ok_(h.text.startswith("Account 61415551234"),
+       'Heading %r has wrong text' % h.text)
+
+
+---------------------------------------------------------------------
+Scenario Outlines
+
+Sometimes a scenario should be run with a number of variables giving a set of known states, actions to take and expected outcomes, all using the same basic actions. You may use a Scenario Outline to achieve this:
+
+Scenario Outline: Blenders
+   Given I put <thing> in a blender,
+    when I switch the blender on
+    then it should transform into <other thing>
+
+ Examples: Amphibians
+   | thing         | other thing |
+   | Red Tree Frog | mush        |
+
+ Examples: Consumer Electronics
+   | thing         | other thing |
+   | iPhone        | toxic waste |
+   | Galaxy Nexus  | toxic waste |
+

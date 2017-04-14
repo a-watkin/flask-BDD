@@ -1,0 +1,10 @@
+behave==1.2.5
+click==6.7
+Flask==0.12.1
+itsdangerous==0.24
+Jinja2==2.9.6
+MarkupSafe==1.0
+parse==1.8.0
+parse-type==0.3.4
+six==1.10.0
+Werkzeug==0.12.1
